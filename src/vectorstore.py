@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import List, Optional
 
 import faiss
-from langchain.schema import Document
+from langchain_core.documents import Document
 
 from .config import VECTORSTORE_PATH
 from .embedder import Embedder
