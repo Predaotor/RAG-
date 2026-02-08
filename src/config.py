@@ -37,7 +37,18 @@ CHUNK_OVERLAP = 50
 TOP_K_RETRIEVAL = 5
 
 # OpenAI (optional - for LLM generation)
-OPENAI_API_KEY = os.getenv("OPEN_API_KEY", "")
+def _get_api_key() -> str:
+    """Get API key from env or Streamlit secrets. Uses OPEN_API_KEY (your secret name)."""
+    key = os.getenv("OPEN_API_KEY") or os.getenv("OPENAI_API_KEY", "")
+    if not key:
+        try:
+            import streamlit as st
+            key = st.secrets.get("OPEN_API_KEY") or st.secrets.get("OPENAI_API_KEY", "")
+        except Exception:
+            pass
+    return key or ""
+
+OPENAI_API_KEY = _get_api_key()
 
 # System prompt for Georgian responses with citation
 SYSTEM_PROMPT = f"""შენ ხარ RAG აგენტი, რომელიც პასუხობს კითხვებს საგადასახადო და საბაჟო ადმინისტრირების შესახებ.
