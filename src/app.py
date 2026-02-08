@@ -12,7 +12,7 @@ from pathlib import Path
 
 import streamlit as st
 
-from src.config import CITATION, DATA_DIR, OPENAI_API_KEY, VECTORSTORE_PATH
+from src.config import CITATION, DATA_DIR, get_openai_api_key, VECTORSTORE_PATH
 from src.loader import load_documents, split_documents
 from src.rag_pipeline import RAGPipeline
 from src.vectorstore import VectorStore
@@ -71,12 +71,11 @@ def main():
         unsafe_allow_html=True,
     )
 
-    if not OPENAI_API_KEY:
+    if not get_openai_api_key():
         st.warning(
-            "⚠️ **OPENAI_API_KEY** არ არის დაყენებული. გთხოვთ, შექმნათ `.env` ფაილი საქაღალდის ფესვში "
-            "ან დააყენოთ გარემოს ცვლადი: `OPENAI_API_KEY=your-key`"
+            "⚠️ **API გასაღები** არ არის დაყენებული. Streamlit Cloud-ზე: Manage app → Settings → Secrets. "
+            "დაამატეთ: `OPENAI_API_KEY = \"sk-your-key\"` ან `OPEN_API_KEY = \"sk-your-key\"`"
         )
-
     if "vectorstore" not in st.session_state:
         with st.spinner("ვექტორული მაღაზია იტვირთება..."):
             st.session_state.vectorstore = init_vectorstore()

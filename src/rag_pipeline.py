@@ -8,7 +8,7 @@ from langchain_core.output_parsers import StrOutputParser
 
 from .config import (
     CITATION,
-    OPENAI_API_KEY,
+    get_openai_api_key,
     SYSTEM_PROMPT,
     TOP_K_RETRIEVAL,
 )
@@ -37,7 +37,7 @@ class RAGPipeline:
         model: str = "gpt-4o-mini",
     ):
         self.vectorstore = vectorstore
-        self.api_key = api_key or OPENAI_API_KEY
+        self.api_key = api_key or get_openai_api_key()
         self.model_name = model
 
         self.llm = ChatOpenAI(

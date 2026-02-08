@@ -36,19 +36,17 @@ CHUNK_SIZE = 500
 CHUNK_OVERLAP = 50
 TOP_K_RETRIEVAL = 5
 
-# OpenAI (optional - for LLM generation)
-def _get_api_key() -> str:
-    """Get API key from env or Streamlit secrets. Uses OPEN_API_KEY (your secret name)."""
-    key = os.getenv("OPEN_API_KEY") or os.getenv("OPENAI_API_KEY", "")
+# OpenAI - key loaded at runtime (not import time) so Streamlit Cloud secrets work
+def get_openai_api_key() -> str:
+    """Get API key from env or Streamlit secrets. Call at runtime, not import time."""
+    key = os.getenv("OPEN_API_KEY") or os.getenv("OPENAI_API_KEY") or ""
     if not key:
         try:
             import streamlit as st
-            key = st.secrets.get("OPEN_API_KEY") or st.secrets.get("OPENAI_API_KEY", "")
+            key = st.secrets.get("OPEN_API_KEY") or st.secrets.get("OPENAI_API_KEY") or ""
         except Exception:
             pass
     return key or ""
-
-OPENAI_API_KEY = _get_api_key()
 
 # System prompt for Georgian responses with citation
 SYSTEM_PROMPT = f"""შენ ხარ RAG აგენტი, რომელიც პასუხობს კითხვებს საგადასახადო და საბაჟო ადმინისტრირების შესახებ.

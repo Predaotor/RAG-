@@ -4,7 +4,7 @@ from typing import List
 
 from langchain_openai import OpenAIEmbeddings
 
-from .config import OPENAI_API_KEY
+from .config import get_openai_api_key
 
 
 class Embedder:
@@ -13,7 +13,7 @@ class Embedder:
     def __init__(self, api_key: str | None = None):
         self._embeddings = OpenAIEmbeddings(
             model="text-embedding-3-small",
-            api_key=api_key or OPENAI_API_KEY,
+            api_key=api_key or get_openai_api_key(),
         )
 
     def embed_text(self, text: str) -> List[float]:

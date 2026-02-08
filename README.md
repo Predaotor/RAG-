@@ -67,7 +67,23 @@ rag-agent/
 ## GitHub და დემო ლინკები
 
 - **GitHub:** [https://github.com/Predaotor/RAG-](https://github.com/Predaotor/RAG-)
-- **დემო:** [Streamlit Cloud-ზე ]()
+- **დემო:** [Streamlit Cloud-ზე](https://share.streamlit.io)
+
+### Streamlit Cloud Secrets (საჭირო!)
+
+Manage app → Settings → Secrets → დაამატეთ **ზუსტად** ასე (double quotes, = ირგვლივ სფეისები):
+
+```toml
+OPENAI_API_KEY = "sk-your-actual-key-here"
+```
+
+ან:
+
+```toml
+OPEN_API_KEY = "sk-your-actual-key-here"
+```
+
+შენიშვნა: Single quotes `'` ნაცვლად double `"` გამოიწვევს Invalid format შეცდომას.
 
 ## წყაროს მითითება
 
