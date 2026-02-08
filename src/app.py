@@ -1,5 +1,6 @@
 """Streamlit demo app for the RAG agent."""
 
+import os
 import sys
 from pathlib import Path
 
@@ -36,6 +37,15 @@ def init_vectorstore() -> VectorStore:
 
 
 def main():
+    # Inject Streamlit secrets into env so OpenAI client finds them
+    if not os.environ.get("OPEN_API_KEY"):
+        try:
+            key = st.secrets.get("OPEN_API_KEY") or st.secrets.get("OPEN_API_KEY")
+            if key:
+                os.environ["OPEN_API_KEY"] = str(key)
+        except Exception:
+            pass
+
     st.set_page_config(
         page_title="RAG აგენტი - საგადასახადო და საბაჟო ჰაბი",
         page_icon="📋",

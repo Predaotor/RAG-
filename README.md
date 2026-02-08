@@ -71,19 +71,18 @@ rag-agent/
 
 ### Streamlit Cloud Secrets (საჭირო!)
 
-Manage app → Settings → Secrets → დაამატეთ **ზუსტად** ასე (double quotes, = ირგვლივ სფეისები):
+1. Manage app → Settings → Secrets
+2. აიღეთ ინსტრუქცია `.streamlit/secrets.toml.example` ფაილიდან
+3. ჩასვით **მხოლოდ** ეს ხაზი (შეცვალეთ თქვენი გასაღებით):
 
 ```toml
-OPENAI_API_KEY = "sk-your-actual-key-here"
+OPENAI_API_KEY = "sk-proj-xxxxxxxx"
 ```
 
-ან:
-
-```toml
-OPEN_API_KEY = "sk-your-actual-key-here"
-```
-
-შენიშვნა: Single quotes `'` ნაცვლად double `"` გამოიწვევს Invalid format შეცდომას.
+**მნიშვნელოვანი:**
+- გამოიყენეთ **double** quotes `"` (არა single `'`)
+- `=` ნიშნის ორივე მხარეს უნდა იყოს space
+- სხვა ტექსტი ან კომენტარი ნუ დაამატებთ — მხოლოდ ეს ერთი ხაზი
 
 ## წყაროს მითითება
 
