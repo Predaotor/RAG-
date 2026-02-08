@@ -67,7 +67,7 @@ rag-agent/
 ## GitHub და დემო ლინკები
 
 - **GitHub:** [https://github.com/Predaotor/RAG-](https://github.com/Predaotor/RAG-)
-- **დემო:** [Streamlit Cloud-ზე](https://share.streamlit.io)
+- **დემო:** [Streamlit Cloud-ზე](https://rkweaobdtctqq5zkgz89t4.streamlit.app/)
 
 ### Streamlit Cloud Secrets (საჭირო!)
 
