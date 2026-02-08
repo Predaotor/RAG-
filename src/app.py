@@ -8,6 +8,8 @@ _root = Path(__file__).resolve().parent.parent
 if str(_root) not in sys.path:
     sys.path.insert(0, str(_root))
 
+from pathlib import Path
+
 import streamlit as st
 
 from src.config import CITATION, DATA_DIR, OPENAI_API_KEY, VECTORSTORE_PATH
@@ -47,7 +49,8 @@ def main():
     .title { color: #1a365d; font-size: 2rem; margin-bottom: 0.5rem; }
     .subtitle { color: #4a5568; font-size: 1rem; margin-bottom: 2rem; }
     .citation-box { 
-        background: #edf2f7; 
+        background: #e2e8f0 !important; 
+        color: #1a202c !important;
         padding: 1rem; 
         border-radius: 8px; 
         border-left: 4px solid #2b6cb0;
@@ -87,18 +90,26 @@ def main():
     # Check if we have documents
     if len(vectorstore.documents) == 0:
         st.info(
-            "📁 დოკუმენტები ჯერ არ არის ჩატვირთული. გთხოვთ, მოათავსოთ PDF, DOCX ან TXT ფაილები "
-            f"`{DATA_DIR}` საქაღალდეში და დააჭიროთ ქვემოთ მოცემულ ღილაკს."
+            "📁 დოკუმენტები ჯერ არ არის ჩატვირთული. მოათავსოთ PDF, DOCX ან TXT ფაილები "
+            f"`{DATA_DIR}` საქაღალდეში, ან ჩატვირთეთ ქვემოთ."
         )
+
+        # File upload
+        uploaded = st.file_uploader("დოკუმენტების ჩატვირთვა", type=["pdf", "docx", "txt"], accept_multiple_files=True)
+        if uploaded:
+            data_dir = Path(DATA_DIR)
+            data_dir.mkdir(parents=True, exist_ok=True)
+            for f in uploaded:
+                (data_dir / f.name).write_bytes(f.getvalue())
+            st.success(f"ჩატვირთულია {len(uploaded)} ფაილი. დააჭირეთ ქვემოთ ღილაკს რომ მონაცემები ჩაიტვირთოს.")
         if st.button("🔄 ხელახლა ჩატვირთვა"):
             st.rerun()
 
-        # Sample question for demo
         st.divider()
         st.markdown("### დემო კითხვა")
         st.markdown("დოკუმენტების ჩატვირთვის შემდეგ შეგიძლიათ კითხვების დასმა.")
     else:
-        st.success(f"✅ ჩატვირთულია {len(vectorstore.documents)} დოკუმენტის ფრაგმენტი.")
+        st.success(f"✅ მონაცემთა ბაზა მზადაა: {len(vectorstore.documents)} ტექსტის ბლოკი დაემატა დოკუმენტებიდან.")
 
         question = st.text_input(
             "კითხვა",
@@ -114,6 +125,14 @@ def main():
             st.markdown(answer)
             st.divider()
 
+        with st.expander("📤 დამატებითი დოკუმენტების ჩატვირთვა"):
+            extra = st.file_uploader("PDF, DOCX ან TXT", type=["pdf", "docx", "txt"], accept_multiple_files=True, key="extra")
+            if extra:
+                data_dir = Path(DATA_DIR)
+                data_dir.mkdir(parents=True, exist_ok=True)
+                for f in extra:
+                    (data_dir / f.name).write_bytes(f.getvalue())
+                st.info("ფაილები დაემატა. დააჭირეთ „დოკუმენტების ხელახლა ჩატვირთვა“ ქვემოთ.")
         if st.button("🔄 დოკუმენტების ხელახლა ჩატვირთვა"):
             # Clear and rebuild
             (VECTORSTORE_PATH / "index.faiss").unlink(missing_ok=True)
